@@ -1,0 +1,138 @@
+-- Роли пользователей
+CREATE TABLE roles
+(
+    id   serial       not null primary key,
+    name varchar(255) not null
+);
+
+-- Пользователи
+CREATE TABLE users
+(
+    id            serial                                      not null primary key,
+    name          varchar(255)                                not null,
+    email         varchar(255)                                not null,
+    password_hash varchar(255)                                not null,
+    role_id       int references roles (id) on delete cascade not null
+);
+
+-- Типы доп трат
+CREATE TABLE additional_expense_types
+(
+    id   serial       not null primary key,
+    name varchar(255) not null
+);
+
+-- Доп траты
+CREATE TABLE additional_expenses
+(
+    id                         serial                                                         not null primary key,
+    additional_expense_type_id int references additional_expense_types (id) on delete cascade not null,
+    name                       varchar(255)                                                   not null,
+    amount                     int                                                            not null
+);
+
+CREATE TABLE consumables
+(
+    id   serial       not null primary key,
+    name varchar(255) not null
+);
+
+CREATE TABLE coffee_machine_types
+(
+    id   serial       not null primary key,
+    name varchar(255) not null
+);
+
+CREATE TABLE report_types
+(
+    id   serial       not null primary key,
+    name varchar(255) not null
+);
+
+-- Торговые точки
+CREATE TABLE points
+(
+    id      serial       not null primary key,
+    name    varchar(255) not null,
+    address varchar(255) not null
+);
+
+-- Связь торговых точек и кофейника
+CREATE TABLE coffee_machine_points
+(
+    coffee_machine_type_id int references coffee_machine_types (id) on delete cascade not null,
+    point_id               int references points (id) on delete cascade               not null
+);
+
+-- Остатки
+CREATE TABLE stocks
+(
+    id            serial                                            not null primary key,
+    consumable_id int references consumables (id) on delete cascade not null,
+    amount        int                                               not null,
+    created_at    timestamp                                         not null default CURRENT_TIMESTAMP,
+    updated_at    timestamp                                         not null default CURRENT_TIMESTAMP
+);
+
+-- План объезда
+CREATE TABLE visitation_plans
+(
+    id              serial                                      not null primary key,
+    responsible_id  int references users (id) on delete cascade not null,
+    visitation_date date                                        not null
+);
+
+-- Пункт плана объезда
+CREATE TABLE visitations
+(
+    id                 serial                                                 not null primary key,
+    point_id           int references points (id) on delete cascade           not null,
+    visitation_plan_id int references visitation_plans (id) on delete cascade not null,
+    is_visited         boolean                                                not null default false
+);
+
+-- Статистика по визиту пункта плана объезда
+CREATE TABLE visitation_results
+(
+    id           serial    not null primary key,
+    created_at   timestamp not null default CURRENT_TIMESTAMP,
+    updated_at   timestamp not null default CURRENT_TIMESTAMP,
+    cash_amount  int       not null,
+    coins_amount int       not null,
+    cups_amount  int       not null,
+    comment      text      not null
+);
+
+-- Отчет обслуживания
+CREATE TABLE reports
+(
+    id                   serial                                                   not null primary key,
+    user_id              int references users (id) on delete cascade              not null,
+    consumable_id        int references consumables (id) on delete cascade        not null,
+    visitation_id        int references visitations (id) on delete cascade        not null,
+    created_at           timestamp                                                not null default CURRENT_TIMESTAMP,
+    updated_at           timestamp                                                not null default CURRENT_TIMESTAMP,
+    is_product_added     boolean                                                  not null default false,
+    is_encasement        boolean                                                  not null default false,
+    visitation_result_id int references visitation_results (id) on delete cascade not null
+);
+
+-- Закупки
+CREATE TABLE purchases
+(
+    id             serial                                             not null primary key,
+    user_id        int references users (id) on delete cascade        not null,
+    report_type_id int references report_types (id) on delete cascade not null,
+    amount         int                                                not null,
+    price          int                                                not null,
+    created_at     timestamp                                          not null default CURRENT_TIMESTAMP,
+    updated_at     timestamp                                          not null default CURRENT_TIMESTAMP
+);
+
+-- Что было израсходовано со склада при обслуживании
+CREATE TABLE report_stocks
+(
+    report_id int references reports (id) on delete cascade not null,
+    stock_id  int references stocks (id) on delete cascade  not null,
+    amount    int                                           not null
+);
