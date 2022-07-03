@@ -100,7 +100,7 @@ CREATE TABLE visitation_results
     cash_amount  int       not null,
     coins_amount int       not null,
     cups_amount  int       not null,
-    comment      text      not null
+    comment      text      nullable 
 );
 
 -- Отчет обслуживания
