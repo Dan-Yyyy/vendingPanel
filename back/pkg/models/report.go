@@ -11,13 +11,13 @@ type Report struct {
 	UpdatedAt          time.Time `json:"updated_at" binding:"required"`
 	IsProductAdded     bool      `json:"is_product_added" binding:"required"`
 	IsEncasement       bool      `json:"is_encasement" binding:"required"`
-	Password           string    `json:"password" binding:"required"`
+	Password           string    `json:"password" binding:"required,max=255"`
 	VisitationResultId int       `json:"visitation_result_id" binding:"required"`
 }
 
 type ReportType struct {
 	Id   int    `json:"-" db:"id"`
-	Name string `json:"name" binding:"required"`
+	Name string `json:"name" binding:"required,max=255"`
 }
 
 type ReportStock struct {

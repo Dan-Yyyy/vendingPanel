@@ -1,11 +1,14 @@
 package main
 
 import (
+	"flag"
 	back "github.com/Dan-Yyyy/vendingPanel.git"
 	"github.com/Dan-Yyyy/vendingPanel.git/pkg/handler"
-	"github.com/Dan-Yyyy/vendingPanel.git/pkg/messages"
+	"github.com/Dan-Yyyy/vendingPanel.git/pkg/message"
 	"github.com/Dan-Yyyy/vendingPanel.git/pkg/repository"
 	"github.com/Dan-Yyyy/vendingPanel.git/pkg/service"
+	"github.com/Dan-Yyyy/vendingPanel.git/seed"
+	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	"log"
@@ -14,7 +17,7 @@ import (
 
 func main() {
 	if err := godotenv.Load(); err != nil {
-		log.Fatalf("%s: %s", messages.ReadEnvError, err.Error())
+		log.Fatalf("%s: %s", message.ReadEnvError, err.Error())
 	}
 
 	db, err := repository.NewPostgresDB(repository.Config{
@@ -27,8 +30,11 @@ func main() {
 	})
 
 	if err != nil {
-		log.Fatalf("%s: %s", messages.DBConnectionError, err.Error())
+		log.Fatalf("%s: %s", message.DBConnectionError, err.Error())
 	}
+
+	// Отлов команды на выполнение сидеров
+	handleArgs(db)
 
 	repos := repository.NewRepository(db)
 	services := service.NewService(repos)
@@ -36,6 +42,19 @@ func main() {
 
 	srv := new(back.Server)
 	if err := srv.Run(os.Getenv("APPLICATION_PORT"), handlers.InitRoutes()); err != nil {
-		log.Fatalf("%s: %s", messages.StartHTTPServerError, err.Error())
+		log.Fatalf("%s: %s", message.StartHTTPServerError, err.Error())
+	}
+}
+
+func handleArgs(db *sqlx.DB) {
+	flag.Parse()
+	args := flag.Args()
+
+	if len(args) >= 1 {
+		switch args[0] {
+		case "seed":
+			seed.Execute(db, args[1:]...)
+			os.Exit(0)
+		}
 	}
 }

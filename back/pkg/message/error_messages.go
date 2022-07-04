@@ -1,4 +1,4 @@
-package messages
+package message
 
 const (
 	EmptyAuthHeader   = "пустой заголовок авторизации"
@@ -13,4 +13,6 @@ const (
 	InvalidSigningMethod = "невалидный метод подписи"
 	UnknownTokenClaims   = "тип token claims должны быть типа *tokenClaims"
 	InvalidTypeOfUserId  = "невалидный тип айди пользователя"
+
+	SeedingError = "Ошибка сидинга"
 )

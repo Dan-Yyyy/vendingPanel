@@ -6,22 +6,22 @@ import (
 )
 
 const (
-	usersTable                  = "users"
-	additionalExpensesTable     = "additional_expenses"
-	additionalExpenseTypesTable = "additional_expense_types"
-	pointsTable                 = "points"
-	coffeeMachineTypesTable     = "coffee_machine_types"
-	coffeeMachinePointsTable    = "coffee_machine_points"
-	purchasesTable              = "purchases"
-	reportsTable                = "reports"
-	reportTypesTable            = "report_types"
-	reportStocksTable           = "report_stocks"
-	rolesTable                  = "roles"
-	stocksTable                 = "stocks"
-	consumablesTable            = "consumables"
-	visitationsTable            = "visitations"
-	visitationResultsTable      = "visitation_results"
-	visitationPlansTable        = "visitation_plans"
+	UsersTable                  = "users"
+	AdditionalExpensesTable     = "additional_expenses"
+	AdditionalExpenseTypesTable = "additional_expense_types"
+	PointsTable                 = "points"
+	CoffeeMachineTypesTable     = "coffee_machine_types"
+	CoffeeMachinePointsTable    = "coffee_machine_points"
+	PurchasesTable              = "purchases"
+	ReportsTable                = "reports"
+	ReportTypesTable            = "report_types"
+	ReportStocksTable           = "report_stocks"
+	RolesTable                  = "roles"
+	StocksTable                 = "stocks"
+	ConsumablesTable            = "consumables"
+	VisitationsTable            = "visitations"
+	VisitationResultsTable      = "visitation_results"
+	VisitationPlansTable        = "visitation_plans"
 )
 
 type Config struct {
