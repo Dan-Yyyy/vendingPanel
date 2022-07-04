@@ -11,7 +11,7 @@ type signInData struct {
 	Password string `json:"password" binding:"required"`
 }
 
-func (h *Handler) signIn(c *gin.Context) {
+func (h *Handler) signUp(c *gin.Context) {
 	var userData models.User
 
 	if err := c.BindJSON(&userData); err != nil {
@@ -27,5 +27,24 @@ func (h *Handler) signIn(c *gin.Context) {
 
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"id": id,
+	})
+}
+
+func (h *Handler) signIn(c *gin.Context) {
+	var userData signInData
+
+	if err := c.BindJSON(&userData); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	id, err := h.services.Authorisation.GenerateToken(userData.Email, userData.Password)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"token": id,
 	})
 }
