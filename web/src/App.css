@@ -1,0 +1,26 @@
+@font-face {
+  font-family: 'Roboto-Thin';
+  src: url('./fonts/Roboto/Roboto-Thin.ttf');
+}
+
+@font-face {
+  font-family: 'Roboto-Regular';
+  src: url('./fonts/Roboto/Roboto-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Roboto-Medium';
+  src: url('./fonts/Roboto/Roboto-Medium.ttf');
+}
+
+.App {
+  max-width: 500px;
+  margin: 0 auto;
+  font-family: 'Roboto-Regular';
+}
+
+@media screen and (max-width: 500px) {
+  .App {
+    max-width: 100vw;
+  }
+}
