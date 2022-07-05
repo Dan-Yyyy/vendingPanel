@@ -13,7 +13,13 @@
 
 
 ### Запустить миграции
-`migrate -path ./migrations -database 'postgres://postgres:postgres@localhost:5436/postgres?sslmode=disable' up`
+`migrate -path ./migrations -database 'postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable' up`
 
 ### Запустить бекенд
 `go run ./back/cmd/main.go`
+
+### Команда для генерации документации
+`swag init -g ./back/cmd/main.go`
+
+### Документация находится по адресу
+`http://localhost:8000/swagger/index.html`

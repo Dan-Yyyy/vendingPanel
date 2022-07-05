@@ -15,10 +15,6 @@ type AuthService struct {
 	r repository.Authorisation
 }
 
-var (
-	singingKey = "fsdfda8s23fdzf323rfds"
-)
-
 type tokenClaims struct {
 	jwt.StandardClaims
 	UserId int `json:"user_id"`

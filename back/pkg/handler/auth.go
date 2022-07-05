@@ -11,6 +11,18 @@ type signInData struct {
 	Password string `json:"password" binding:"required"`
 }
 
+// @Summary SignUp
+// @Tags Auth
+// @Description Создание нового пользователя
+// @ID create-account
+// @Accept json
+// @Produce json
+// @Param input body models.User true "Данные пользователя"
+// @Success 200 {integer} integer 1
+// @Failure 400,404 {object} responseError
+// @Failure 500 {object} responseError
+// @Failure default {object} responseError
+// @Router /auth/sign-up [post]
 func (h *Handler) signUp(c *gin.Context) {
 	var userData models.User
 
@@ -30,6 +42,18 @@ func (h *Handler) signUp(c *gin.Context) {
 	})
 }
 
+// @Summary SignIn
+// @Tags Auth
+// @Description Авторизация пользователя
+// @ID login
+// @Accept json
+// @Produce json
+// @Param input body signInData true "Данные пользователя"
+// @Success 200 {string} token "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTcwNDYxNTIsImlhdCI6MTY1NzAwMjk1MiwidXNlcl9pZCI6MX0.xhsaDIdJ8BBnp4sh_dBfHjVq8TMFL_AruUDdGxIhBpU"
+// @Failure 400,404 {object} responseError
+// @Failure 500 {object} responseError
+// @Failure default {object} responseError
+// @Router /auth/sign-in [post]
 func (h *Handler) signIn(c *gin.Context) {
 	var userData signInData
 

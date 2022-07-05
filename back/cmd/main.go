@@ -15,6 +15,17 @@ import (
 	"os"
 )
 
+// @title Vending panel API
+// @version 1.0
+// @description API сервер для приложения вендинговой панели
+
+// @host 192.168.0.122:8000
+// @BasePath /
+
+// @securityDefinitions.apiKey ApiKeyAuth
+// @in header
+// @name Authorization
+
 func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Fatalf("%s: %s", message.ReadEnvError, err.Error())
