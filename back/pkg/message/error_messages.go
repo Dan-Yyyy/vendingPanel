@@ -14,5 +14,9 @@ const (
 	UnknownTokenClaims   = "тип token claims должны быть типа *tokenClaims"
 	InvalidTypeOfUserId  = "невалидный тип айди пользователя"
 
-	SeedingError = "Ошибка сидинга"
+	SeedingError = "ошибка сидинга"
+
+	CreatUserError   = "не удалось создать пользователя"
+	UserNotFound     = "пользователь с такими данными не найден"
+	UserAlreadyExist = "пользователь с такой почтой уже существует"
 )

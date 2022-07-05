@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	back "github.com/Dan-Yyyy/vendingPanel.git"
+	_ "github.com/Dan-Yyyy/vendingPanel.git/docs"
 	"github.com/Dan-Yyyy/vendingPanel.git/pkg/handler"
 	"github.com/Dan-Yyyy/vendingPanel.git/pkg/message"
 	"github.com/Dan-Yyyy/vendingPanel.git/pkg/repository"
@@ -44,7 +45,7 @@ func main() {
 		log.Fatalf("%s: %s", message.DBConnectionError, err.Error())
 	}
 
-	// Отлов команды на выполнение сидеров
+	// Обработка команды на выполнение сидеров
 	handleArgs(db)
 
 	repos := repository.NewRepository(db)

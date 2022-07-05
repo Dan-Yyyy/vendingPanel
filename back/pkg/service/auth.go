@@ -20,13 +20,21 @@ type tokenClaims struct {
 	UserId int `json:"user_id"`
 }
 
-func (s AuthService) GenerateToken(email string, password string) (string, error) {
+func NewAuthService(r repository.Authorisation) *AuthService {
+	return &AuthService{r: r}
+}
+
+func (s AuthService) GetUser(email string, password string) (*models.User, error) {
 	user, err := s.r.GetUser(email, generatePasswordHash(password))
 
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
+	return &user, nil
+}
+
+func (s AuthService) GenerateToken(user models.User) (string, error) {
 	tokenTTL, err := strconv.Atoi(os.Getenv("JWT_TOKEN_TTL"))
 	if err != nil {
 		return "", err
@@ -41,10 +49,6 @@ func (s AuthService) GenerateToken(email string, password string) (string, error
 	})
 
 	return token.SignedString([]byte(os.Getenv("JWT_SIGNING_KEY")))
-}
-
-func NewAuthService(r repository.Authorisation) *AuthService {
-	return &AuthService{r: r}
 }
 
 func (s AuthService) CreateUser(user models.User) (int, error) {

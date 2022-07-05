@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/Dan-Yyyy/vendingPanel.git/pkg/message"
 	"github.com/Dan-Yyyy/vendingPanel.git/pkg/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -9,6 +10,10 @@ import (
 type signInData struct {
 	Email    string `json:"email" binding:"required"`
 	Password string `json:"password" binding:"required"`
+}
+
+type loginResponse struct {
+	Token string `json:"token" `
 }
 
 // @Summary SignUp
@@ -27,13 +32,13 @@ func (h *Handler) signUp(c *gin.Context) {
 	var userData models.User
 
 	if err := c.BindJSON(&userData); err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		newErrorResponse(c, http.StatusBadRequest, err.Error(), err.Error())
 		return
 	}
 
 	id, err := h.services.Authorisation.CreateUser(userData)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, err.Error(), message.CreatUserError)
 		return
 	}
 
@@ -49,7 +54,7 @@ func (h *Handler) signUp(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param input body signInData true "Данные пользователя"
-// @Success 200 {string} string "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTcwNDYxNTIsImlhdCI6MTY1NzAwMjk1MiwidXNlcl9pZCI6MX0.xhsaDIdJ8BBnp4sh_dBfHjVq8TMFL_AruUDdGxIhBpU"
+// @Success 200 {object} loginResponse "Токен для доступа к API"
 // @Failure 400,404 {object} responseError
 // @Failure 500 {object} responseError
 // @Failure default {object} responseError
@@ -58,17 +63,23 @@ func (h *Handler) signIn(c *gin.Context) {
 	var userData signInData
 
 	if err := c.BindJSON(&userData); err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		newErrorResponse(c, http.StatusBadRequest, err.Error(), err.Error())
 		return
 	}
 
-	id, err := h.services.Authorisation.GenerateToken(userData.Email, userData.Password)
+	user, err := h.services.Authorisation.GetUser(userData.Email, userData.Password)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, err.Error(), message.UserNotFound)
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"token": id,
+	token, err := h.services.Authorisation.GenerateToken(*user)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error(), message.UserNotFound)
+		return
+	}
+
+	c.JSON(http.StatusOK, loginResponse{
+		Token: token,
 	})
 }

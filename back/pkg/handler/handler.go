@@ -1,7 +1,6 @@
 package handler
 
 import (
-	_ "github.com/Dan-Yyyy/vendingPanel.git/docs"
 	"github.com/Dan-Yyyy/vendingPanel.git/pkg/service"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
