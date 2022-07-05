@@ -49,7 +49,7 @@ func (h *Handler) signUp(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param input body signInData true "Данные пользователя"
-// @Success 200 {string} token "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTcwNDYxNTIsImlhdCI6MTY1NzAwMjk1MiwidXNlcl9pZCI6MX0.xhsaDIdJ8BBnp4sh_dBfHjVq8TMFL_AruUDdGxIhBpU"
+// @Success 200 {string} string "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTcwNDYxNTIsImlhdCI6MTY1NzAwMjk1MiwidXNlcl9pZCI6MX0.xhsaDIdJ8BBnp4sh_dBfHjVq8TMFL_AruUDdGxIhBpU"
 // @Failure 400,404 {object} responseError
 // @Failure 500 {object} responseError
 // @Failure default {object} responseError
