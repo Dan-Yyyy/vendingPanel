@@ -2,7 +2,9 @@ package service
 
 import (
 	"crypto/sha1"
+	"errors"
 	"fmt"
+	"github.com/Dan-Yyyy/vendingPanel.git/pkg/message"
 	"github.com/Dan-Yyyy/vendingPanel.git/pkg/models"
 	"github.com/Dan-Yyyy/vendingPanel.git/pkg/repository"
 	"github.com/golang-jwt/jwt"
@@ -24,7 +26,27 @@ func NewAuthService(r repository.Authorisation) *AuthService {
 	return &AuthService{r: r}
 }
 
-func (s AuthService) GetUser(email string, password string) (*models.User, error) {
+func (s *AuthService) ParseToken(accessToken string) (int, error) {
+	token, err := jwt.ParseWithClaims(accessToken, &tokenClaims{}, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("invalid signing method")
+		}
+
+		return []byte(os.Getenv("JWT_SIGNING_KEY")), nil
+	})
+	if err != nil {
+		return 0, err
+	}
+
+	claims, ok := token.Claims.(*tokenClaims)
+	if !ok {
+		return 0, errors.New(message.UnknownTokenClaims)
+	}
+
+	return claims.UserId, nil
+}
+
+func (s *AuthService) GetUser(email string, password string) (*models.User, error) {
 	user, err := s.r.GetUser(email, generatePasswordHash(password))
 
 	if err != nil {
@@ -34,7 +56,7 @@ func (s AuthService) GetUser(email string, password string) (*models.User, error
 	return &user, nil
 }
 
-func (s AuthService) GenerateToken(user models.User) (string, error) {
+func (s *AuthService) GenerateToken(user models.User) (string, error) {
 	tokenTTL, err := strconv.Atoi(os.Getenv("JWT_TOKEN_TTL"))
 	if err != nil {
 		return "", err
@@ -51,7 +73,7 @@ func (s AuthService) GenerateToken(user models.User) (string, error) {
 	return token.SignedString([]byte(os.Getenv("JWT_SIGNING_KEY")))
 }
 
-func (s AuthService) CreateUser(user models.User) (int, error) {
+func (s *AuthService) CreateUser(user models.User) (int, error) {
 	user.Password = generatePasswordHash(user.Password)
 
 	return s.r.CreateUser(user)
@@ -62,4 +84,8 @@ func generatePasswordHash(password string) string {
 	hash.Write([]byte(password))
 
 	return fmt.Sprintf("%x", hash.Sum(nil))
+}
+
+func (s *AuthService) GetUserById(userId int) (models.User, error) {
+	return s.r.GetUserById(userId)
 }

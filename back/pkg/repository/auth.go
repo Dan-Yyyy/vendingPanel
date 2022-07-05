@@ -10,6 +10,14 @@ type AuthPostgres struct {
 	db *sqlx.DB
 }
 
+func (r *AuthPostgres) GetUserById(userId int) (models.User, error) {
+	var user models.User
+	query := fmt.Sprintf("SELECT id, name, email, role_id FROM %s WHERE id=$1", UsersTable)
+	err := r.db.Get(&user, query, userId)
+
+	return user, err
+}
+
 func NewAuth(db *sqlx.DB) *AuthPostgres {
 	return &AuthPostgres{db: db}
 }

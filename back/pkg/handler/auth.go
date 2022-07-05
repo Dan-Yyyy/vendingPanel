@@ -38,7 +38,7 @@ func (h *Handler) signUp(c *gin.Context) {
 
 	id, err := h.services.Authorisation.CreateUser(userData)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error(), message.CreatUserError)
+		newErrorResponse(c, http.StatusInternalServerError, err.Error(), message.UserAlreadyExist)
 		return
 	}
 
@@ -82,4 +82,20 @@ func (h *Handler) signIn(c *gin.Context) {
 	c.JSON(http.StatusOK, loginResponse{
 		Token: token,
 	})
+}
+
+func (h *Handler) checkAuth(c *gin.Context) {
+	userId, err := getUserId(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error(), err.Error())
+		return
+	}
+
+	user, err := h.services.Authorisation.GetUserById(userId)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error(), err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, user)
 }

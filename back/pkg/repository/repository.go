@@ -8,6 +8,7 @@ import (
 type Authorisation interface {
 	CreateUser(user models.User) (int, error)
 	GetUser(email string, passwordHash string) (models.User, error)
+	GetUserById(userId int) (models.User, error)
 }
 
 type Repository struct {

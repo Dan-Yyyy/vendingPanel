@@ -12,7 +12,9 @@ const (
 
 	InvalidSigningMethod = "невалидный метод подписи"
 	UnknownTokenClaims   = "тип token claims должны быть типа *tokenClaims"
+	UserIdNotFound       = "не удалость найти айди пользователя"
 	InvalidTypeOfUserId  = "невалидный тип айди пользователя"
+	TokenIsEmpty         = "токен пустой"
 
 	SeedingError = "ошибка сидинга"
 
