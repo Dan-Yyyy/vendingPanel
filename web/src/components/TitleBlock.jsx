@@ -7,7 +7,7 @@ const TitleContainer = styled.div`
   margin-bottom: 32px;
   
   .icon {
-    color: #A0694B;
+    color: ${props => props.color};
     cursor: pointer;
     stroke-width: 1;
   }
@@ -20,11 +20,11 @@ const Title = styled.h1`
   text-transform: uppercase;
 `;
 
-export const TitleBlock = ({title, Icon}) => {
+export const TitleBlock = ({title, Icon, click = null, size = 36, color = "#A0694B"}) => {
   return(
-    <TitleContainer>
+    <TitleContainer onClick={click}>
       <Title>{title}</Title>
-      <Icon size={36} className="icon" />
+      <Icon size={size} className="icon" color={color}/>
     </TitleContainer>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from 'react-router-dom';
 import { TbHome, TbShoppingCartPlus, Tb3DCubeSphere, TbPlaylistAdd } from 'react-icons/tb';
@@ -6,13 +6,18 @@ import { TbHome, TbShoppingCartPlus, Tb3DCubeSphere, TbPlaylistAdd } from 'react
 const FooterContainer = styled.div`
   position: fixed;
   bottom: 0;
-  left: calc(100% - ${props => props.width}px/2);
+  left: 0;
   display: flex;
   justify-content: space-between;
+  min-width: 320px;
   width: 100%;
   max-width: 500px;
   padding: 7px 24px;
   background-color: white;
+
+  @media (min-width: 500px) {
+    left: calc(50% - 250px);
+  }
 
   &:before {
     content: '';
@@ -47,22 +52,15 @@ const FooterLable = styled.p`
 `;
 
 export const Footer = () => {
-  const ref = useRef();
+  
   const [activePage, setActivePage] = useState('home');
-  const [width, setWidth] = useState(ref.offsetWidth);
 
   const handleClick = (e) => {
     setActivePage(e.currentTarget.id);
   };
 
-  const handleWindowResize = () => {
-    setWidth(window.innerWidth);
-  };
-
-  window.addEventListener("resize", handleWindowResize);
-
   return(
-    <FooterContainer width={width} ref={ref}>
+    <FooterContainer>
       <Link to="/" id="home" onClick={(e) => handleClick(e)} className={activePage === 'home' ? 'active' : null}>
         <TbHome size={24} className="footer_icon"/>
         <FooterLable>Главная</FooterLable>

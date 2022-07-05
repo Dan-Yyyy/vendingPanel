@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { TitleBlock } from '../components/TitleBlock';
 import { Point } from "../components/Point";
 import { FiEdit } from 'react-icons/fi';
+import { setActiveDay } from "../redux/home/homeReduser";
 
 
 const HomeContainer = styled.div`
@@ -59,11 +60,13 @@ const PointContainer = styled.div``;
 
 
 export const Home = () => {
-  const points = useSelector(state => state.home);
-  const [active, setActive] = useState('today');
+  const home = useSelector(state => state.home);
+  const dispatch = useDispatch();
+  const active = home.activeDate;
 
   const handleClick = (e) => {
-    setActive(e.target.id);
+    if(e.target.id !== active)
+      dispatch(setActiveDay(`${e.target.id}`));
   }
 
   return(
@@ -79,8 +82,8 @@ export const Home = () => {
       </TaskBlock>
       <PointContainer>
         {
-          points.status === 'fullfield'
-          ? points.items.map(point => 
+          home.status === 'fullfield'
+          ? home.items.map(point => 
             <Point adress={point.adress} 
               mashine={point.mashine} 
               isVisited={point.isVisited} 

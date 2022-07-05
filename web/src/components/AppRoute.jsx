@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { pablicRoutes, privateRoutes } from './../router';
 import { Header } from './Header';
 import { Footer } from "./Footer";
+import { useSelector } from "react-redux";
 
 const PageContainer = styled.div`
   position: relative;
@@ -15,7 +16,7 @@ const PageContainer = styled.div`
 `;
 
 export const AppRoute = () => {
-  const isAuth = true;
+  const isAuth = useSelector(state => state.auth.isAuth);
 
   return(
     <>

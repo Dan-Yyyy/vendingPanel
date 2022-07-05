@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const homeSlise = createSlice({
   name: "home",
   initialState: {
+    activeDate: 'today',
     status: 'fullfield',
     items: [
       {
@@ -34,8 +35,11 @@ const homeSlise = createSlice({
         return item;
       })
     },
+    setActiveDay(state, action) {
+      state.activeDate = action.payload;
+    },
   },
 })
 
 export default homeSlise.reducer;
-export const { visited } = homeSlise.actions;
+export const { visited, setActiveDay } = homeSlise.actions;
