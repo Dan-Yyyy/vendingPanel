@@ -84,6 +84,17 @@ func (h *Handler) signIn(c *gin.Context) {
 	})
 }
 
+// @Summary CheckAuth
+// @Tags Api
+// @Description Проверка авторизации
+// @ID check-auth
+// @Accept json
+// @Produce json
+// @Success 200 {object} models.User "Токен для доступа к API"
+// @Failure 400,404 {object} responseError
+// @Failure 500 {object} responseError
+// @Failure default {object} responseError
+// @Router /api/check-auth [post]
 func (h *Handler) checkAuth(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {

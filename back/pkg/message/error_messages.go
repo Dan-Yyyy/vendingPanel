@@ -15,6 +15,7 @@ const (
 	UserIdNotFound       = "не удалость найти айди пользователя"
 	InvalidTypeOfUserId  = "невалидный тип айди пользователя"
 	TokenIsEmpty         = "токен пустой"
+	TokenExpired         = "токен устарел"
 
 	SeedingError = "ошибка сидинга"
 
