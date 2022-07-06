@@ -13,12 +13,18 @@ type Authorisation interface {
 	ParseToken(s string) (int, error)
 }
 
+type Purchase interface {
+	AddPurchase(purchase models.Purchase) (int, error)
+}
+
 type Service struct {
 	Authorisation
+	Purchase
 }
 
 func NewService(r *repository.Repository) *Service {
 	return &Service{
 		Authorisation: NewAuthService(r.Authorisation),
+		Purchase:      NewPurchaseService(r.Purchase),
 	}
 }

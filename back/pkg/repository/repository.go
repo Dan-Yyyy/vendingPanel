@@ -11,12 +11,18 @@ type Authorisation interface {
 	GetUserById(userId int) (models.User, error)
 }
 
+type Purchase interface {
+	AddPurchase(purchase models.Purchase) (int, error)
+}
+
 type Repository struct {
 	Authorisation
+	Purchase
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorisation: NewAuth(db),
+		Purchase:      NewPurchase(db),
 	}
 }

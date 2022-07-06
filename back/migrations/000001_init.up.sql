@@ -122,7 +122,7 @@ CREATE TABLE purchases
 (
     id             serial                                             not null primary key,
     user_id        int references users (id) on delete cascade        not null,
-    report_type_id int references report_types (id) on delete cascade not null,
+    consumable_id  int references consumables (id) on delete cascade  not null,
     amount         int                                                not null,
     price          int                                                not null,
     created_at     timestamp                                          not null default CURRENT_TIMESTAMP,
