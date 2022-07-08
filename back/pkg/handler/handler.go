@@ -30,9 +30,11 @@ func (h Handler) InitRoutes() *gin.Engine {
 	{
 		api.GET("/check-auth", h.checkAuth)
 
-		purchase := api.Group("purchase")
+		purchase := api.Group("purchases")
 		{
 			purchase.POST("/", h.addPurchase)
+			purchase.GET("/", h.getPurchases)
+			purchase.GET("/:id", h.getPurchase)
 		}
 	}
 

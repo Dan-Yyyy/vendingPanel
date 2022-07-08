@@ -27,3 +27,27 @@ func (r PurchasePostgres) AddPurchase(purchase models.Purchase) (int, error) {
 
 	return id, nil
 }
+
+func (r PurchasePostgres) GetPurchase(purchaseId int) (*models.Purchase, error) {
+	var purchase models.Purchase
+	query := fmt.Sprintf("SELECT * FROM %s WHERE id = $1", PurchasesTable)
+	err := r.db.Get(&purchase, query, purchaseId)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &purchase, nil
+}
+
+func (r PurchasePostgres) GetPurchases() ([]models.Purchase, error) {
+	var purchases []models.Purchase
+
+	query := fmt.Sprintf("SELECT * FROM %s", PurchasesTable)
+	err := r.db.Select(&purchases, query)
+	if err != nil {
+		return nil, err
+	}
+
+	return purchases, nil
+}

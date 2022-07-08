@@ -13,6 +13,8 @@ type Authorisation interface {
 
 type Purchase interface {
 	AddPurchase(purchase models.Purchase) (int, error)
+	GetPurchase(purchaseId int) (*models.Purchase, error)
+	GetPurchases() ([]models.Purchase, error)
 }
 
 type Repository struct {
