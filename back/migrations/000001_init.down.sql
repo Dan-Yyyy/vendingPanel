@@ -1,5 +1,7 @@
 DROP TABLE report_stocks;
 
+DROP TABLE stocks;
+
 DROP TABLE purchases;
 
 DROP TABLE reports;
@@ -9,8 +11,6 @@ DROP TABLE visitation_results;
 DROP TABLE visitations;
 
 DROP TABLE visitation_plans;
-
-DROP TABLE stocks;
 
 DROP TABLE coffee_machine_points;
 

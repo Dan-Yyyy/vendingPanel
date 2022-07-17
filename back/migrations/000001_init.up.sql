@@ -64,16 +64,6 @@ CREATE TABLE coffee_machine_points
     point_id               int constraint fk_points references points (id) on delete cascade               not null
 );
 
--- Остатки
-CREATE TABLE stocks
-(
-    id            serial                                            not null primary key,
-    consumable_id int constraint fk_consumables references consumables (id) on delete cascade not null,
-    amount        int                                               not null,
-    created_at    timestamp                                         not null default CURRENT_TIMESTAMP,
-    updated_at    timestamp                                         not null default CURRENT_TIMESTAMP
-);
-
 -- План объезда
 CREATE TABLE visitation_plans
 (
@@ -127,6 +117,15 @@ CREATE TABLE purchases
     price          int                                                not null,
     created_at     timestamp                                          not null default CURRENT_TIMESTAMP,
     updated_at     timestamp                                          not null default CURRENT_TIMESTAMP
+);
+
+-- Остатки
+CREATE TABLE stocks
+(
+    id            serial                                            not null primary key,
+    purchase_id   int constraint fk_purchases   references purchases   (id) on delete cascade not null,
+    created_at    timestamp                                         not null default CURRENT_TIMESTAMP,
+    updated_at    timestamp                                         not null default CURRENT_TIMESTAMP
 );
 
 -- Что было израсходовано со склада при обслуживании

@@ -10,6 +10,20 @@ type PurchasePostgres struct {
 	db *sqlx.DB
 }
 
+func (r PurchasePostgres) UpdatePurchase(purchaseId int, purchase models.Purchase) error {
+	query := fmt.Sprintf(
+		"UPDATE %s SET consumable_id = $1, amount = $2, price = $3, updated_at = $4 WHERE id = $5",
+		PurchasesTable)
+
+	_, err := r.db.Exec(query, purchase.ConsumableId, purchase.Amount, purchase.Price, purchase.UpdatedAt, purchaseId)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func NewPurchase(db *sqlx.DB) *PurchasePostgres {
 	return &PurchasePostgres{db: db}
 }
@@ -50,4 +64,14 @@ func (r PurchasePostgres) GetPurchases() ([]models.Purchase, error) {
 	}
 
 	return purchases, nil
+}
+
+func (r PurchasePostgres) DeletePurchase(purchaseId int) error {
+	query := fmt.Sprintf("DELETE FROM %s WHERE id = $1", PurchasesTable)
+	_, err := r.db.Exec(query, purchaseId)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

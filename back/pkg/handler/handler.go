@@ -35,6 +35,8 @@ func (h Handler) InitRoutes() *gin.Engine {
 			purchase.POST("/", h.addPurchase)
 			purchase.GET("/", h.getPurchases)
 			purchase.GET("/:id", h.getPurchase)
+			purchase.POST("/:id", h.updatePurchase)
+			purchase.DELETE("/:id", h.deletePurchase)
 		}
 	}
 
